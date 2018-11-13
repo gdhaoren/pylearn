@@ -49,11 +49,13 @@ fruit_name=fruit_data['fruit_name'].unique().tolist()
 feat_cols=fruit_data.columns.values[1:].tolist()
 
 #设置训练集和测试集
+#设置训练集和测试集  random_state 相当于随机种子（伪随机） 每次种子相同 随机的结果也相同
 train_data,test_data=train_test_split(fruit_data,test_size=1/5,random_state=10)
 
 
 
 #对测试集中的数据进行预测
+#对于dataframe的行遍历 使用 .iterrows()的迭代器是合适的，dataframe的行操作比起整列的向量操作要慢很多
 for idx,row in test_data.iterrows() :
     #在使用.values之前 获得的是一个series类型的数据,使用.values后 变成了一个数组ndarray
     test_sample_feat=row[feat_cols].values
