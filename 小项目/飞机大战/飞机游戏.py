@@ -177,7 +177,7 @@ def main():
 				enemy_list.remove(enemy)
 			if hero_plane.bo_test(enemy):
 				exit()
-			
+		# 绘制爆炸画面	
 		if enemy_boom_list :
 			for pos in enemy_boom_list:
 				screen.blit(boom,pos[:2])
