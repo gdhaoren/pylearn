@@ -55,8 +55,6 @@ class HeroPlane(Object):
 		'''检测英雄飞机是否被击落'''
 		for bo in enemy_plane.bullet_list:
 			if bo.x>self.x+12 and bo.x<self.x+64 and bo.y+17>self.y:
-				# 记录我方飞机爆炸位置和显示帧数
-				hero_boom = [bo.x+50,self.y+50,50]
 				return True
 
 
@@ -149,9 +147,6 @@ def main():
 	# 声明爆炸点列表为全局变量
 	global enemy_boom_list
 	enemy_boom_list=[]
-	# 我方爆炸点
-	# 声明爆炸点为全局变量
-	global hero_boom
 	# 爆炸画面
 	boom = pygame.image.load(r"./images/boom2.png")
 	# 循环显示内容
