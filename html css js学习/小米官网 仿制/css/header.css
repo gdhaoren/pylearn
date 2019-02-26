@@ -1,0 +1,43 @@
+ /* 公共css样式 */
+ /* 舍弃原始结构 */
+ /* body也有内补白 */
+ body,div,ul,a,span,h1,h2,h3,h4,img,li,p{margin: 0px;padding: 0px;}
+ /* 去掉无序列表的样式 */
+ ul{list-style: none;}
+ /* 去掉超链接底部的横线 */
+ a{text-decoration: none}
+
+ /* header样式设置 */
+ /* 注意语法上选择器在逐层选择的时候要加空格 */
+#header {
+	background-color: #333;
+	width: 100%;
+	height: 40px;
+}
+
+#header .container {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 左侧header样式设置 */
+#header .container .left {float: left;}
+
+/* 右侧header样式设置 */
+#header .container .right {float: right;}
+
+/* 超链接设置 */
+#header a {
+	color: #b0b0b0;
+	font-size: 12px;
+	line-height: 40px;
+	cursor: pointer;
+	font-family: "Helvetica Neue";
+}
+
+/* 对sep进行设置 */
+#header .sep {margin: 0.5em;color: #424242;}
+
+/* 对鼠标放置时候的样式进行设计 */
+#header a:hover {color:#fff;}

@@ -39,7 +39,7 @@ class HeroPlane(Object):
 
 	def fire(self):
 		'''生成子弹'''
-		b_image = r"C:\Users\gdhao\Desktop\python全栈\第二周 python基础2\1.18阶段案例\images\pd.png"
+		b_image = r".\images\pd.png"
 		self.bullet_list.append(Bullet(self.screen,self.x+51,self.y,b_image))
 
 	def display(self):
@@ -52,6 +52,7 @@ class HeroPlane(Object):
 		self.screen.blit(self.image,(self.x,self.y))
 
 	def bo_test(self,enemy_plane):
+		'''检测英雄飞机是否被击落'''
 		for bo in enemy_plane.bullet_list:
 			if bo.x>self.x+12 and bo.x<self.x+64 and bo.y+17>self.y:
 				return True
@@ -71,7 +72,7 @@ class Bullet(Object):
 
 	def move_b(self):
 		'''向后运动'''
-		self.y+=8
+		self.y+=5
 		if self.y > 512:
 			return True
 
@@ -92,15 +93,19 @@ class EnemyPlane(Object):
 		if hero_plane.bullet_list:
 			for bo in hero_plane.bullet_list:
 				if bo.x>self.x+12 and bo.x<self.x+90 and bo.y>self.y+20 and bo.y<self.y+60:
+					# 记录爆炸位置和显示帧数
+					enemy_boom_list.append([bo.x-50,bo.y-40,20])
 					return True
 		# 敌机发射子弹
-		b_image = r"C:\Users\gdhao\Desktop\python全栈\第二周 python基础2\1.18阶段案例\images\pd.png"
+		b_image = r".\images\enemy_bullet.png"
 		self.bullet_list.append(Bullet(self.screen,self.x+50,self.y+75,b_image)) 
 
 	def display(self):
 		'''绘制敌机和子弹'''
-		for bullet in self.bullet_list:
-			bullet.display()
+		for indx,bullet in enumerate(self.bullet_list):
+			# 每隔8个子弹显示一个
+			if indx%20 == 0:
+				bullet.display()
 			if bullet.move_b():
 				self.bullet_list.remove(bullet)
 
@@ -130,14 +135,20 @@ def main():
 	# 创建主窗口
 	screen = pygame.display.set_mode((512,568))
 	# 读入背景图片
-	background = pygame.image.load(r"C:\Users\gdhao\Desktop\python全栈\第二周 python基础2\1.18阶段案例\images\bg2.jpg").convert()
+	background = pygame.image.load(r".\images\bg2.jpg").convert()
 	# 初始化背景图片位置
 	y_position = -968
 	# 初始化一个玩家飞机
-	h_image = r"C:\Users\gdhao\Desktop\python全栈\第二周 python基础2\1.18阶段案例\images\me.png"
+	h_image = r".\images\me.png"
 	hero_plane = HeroPlane(screen,200,400,h_image)
 	# 敌机列表
 	enemy_list=[]
+	# 敌方爆炸点列表
+	# 声明爆炸点列表为全局变量
+	global enemy_boom_list
+	enemy_boom_list=[]
+	# 爆炸画面
+	boom = pygame.image.load(r"./images/boom2.png")
 	# 循环显示内容
 	while True:
 		# 生成背景显示
@@ -156,7 +167,7 @@ def main():
 		keyboard_control(hero_plane)
 		# 随机生成敌机
 		if random.choice(range(50))==10:
-			e_path="C:\\Users\\gdhao\\Desktop\\python全栈\\第二周 python基础2\\1.18阶段案例\\images\\e"+str(random.choice(range(3)))+".png"
+			e_path=".\\images\\e"+str(random.choice(range(3)))+".png"
 			x = random.choice(range(398))
 			enemy_list.append(EnemyPlane(screen,x,-76,e_path))
 		# 绘制敌机, 并检测敌方子弹与我方碰撞
@@ -165,10 +176,19 @@ def main():
 			if enemy.move(hero_plane):
 				enemy_list.remove(enemy)
 			if hero_plane.bo_test(enemy):
-				exit()	
+				exit()
+		# 绘制爆炸画面	
+		if enemy_boom_list :
+			for pos in enemy_boom_list:
+				screen.blit(boom,pos[:2])
+				pos[2]-=1
+				# 显示满10帧就移除这个爆炸画面
+				if pos[2] ==0 :
+					enemy_boom_list.remove(pos)
+					
 		# 更新显示
 		pygame.display.update()
-		# 设置显示间歇为0.04s
+		# 设置显示间歇为0.02s
 		pygame.time.delay(20)
 	
 
